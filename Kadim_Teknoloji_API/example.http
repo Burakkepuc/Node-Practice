@@ -1,0 +1,22 @@
+### List homepage /
+GET http://localhost:5000/
+
+### Create a new user
+POST http://localhost:5000/api/regster
+Content-Type: application/json
+
+{
+  "name":"Burak",
+  "lastname":"Kepuc",
+  "email": "burak2@test.com",
+  "password":"test123"
+}
+
+### Login user
+POST http://localhost:5000/api/login
+Content-Type: application/json
+
+{
+  "email": "johndoe@example.com",
+  "password":"test123"
+}
