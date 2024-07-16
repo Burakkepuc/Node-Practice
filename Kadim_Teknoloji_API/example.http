@@ -2,13 +2,13 @@
 GET http://localhost:5000/
 
 ### Create a new user
-POST http://localhost:5000/api/regster
+POST http://localhost:5000/api/register
 Content-Type: application/json
 
 {
   "name":"Burak",
   "lastname":"Kepuc",
-  "email": "burak2@test.com",
+  "email": "burak@test.com",
   "password":"test123"
 }
 
@@ -17,6 +17,6 @@ POST http://localhost:5000/api/login
 Content-Type: application/json
 
 {
-  "email": "johndoe@example.com",
+  "email": "burak@test.com",
   "password":"test123"
 }

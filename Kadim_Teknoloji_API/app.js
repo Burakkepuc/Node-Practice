@@ -17,7 +17,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.use("/api", router)
-app.use(APIError) // Global Error Handler 
+app.use(APIError) // Global Error Handler for invalid route names
 app.use(errorHandlerMiddleware) // Throw new Error
 
 app.listen(port, () => {

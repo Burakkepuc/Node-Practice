@@ -2,10 +2,29 @@ const User = require("../models/user.model");
 const bcrypt = require('bcrypt');
 const APIError = require("../utils/errors");
 const Response = require("../utils/response");
+const { createToken } = require("../middlewares/auth");
 
 const login = async (req, res) => {
-  console.log(req.body);
-  return res.json(req.body)
+  try {
+    const { email, password } = req.body
+
+    const userCheck = await User.findOne({ email })
+
+    if (!userCheck) {
+      throw new APIError("Email ya da şifre hatalıdır.", 401)
+    }
+
+    const comparePassword = await bcrypt.compare(password, userCheck.password)
+
+    if (!comparePassword) {
+      throw new APIError("Email ya da şifre hatalıdır.")
+    }
+
+    createToken(userCheck, res)
+  } catch (error) {
+    throw new APIError(error.message, 500)
+  }
+
 }
 
 
