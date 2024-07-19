@@ -20,3 +20,7 @@ Content-Type: application/json
   "email": "burak@test.com",
   "password":"test123"
 }
+
+### Access Protected Resource
+GET http://localhost:5000/api/me
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Njk2ZWQ1YTc2OTU1MWIwMDQ2ZDU5MGUiLCJuYW1lIjoiQnVyYWsiLCJlbWFpbCI6ImJ1cmFrQHRlc3QuY29tIiwiaWF0IjoxNzIxNDI5NTI2LCJleHAiOjE3MjIwMzQzMjZ9.SftyGXaAY0Gl9ufxllHsr12Of2TahIXrwrn3KO3-66j95YuvV13X8LKbFtv-vCx1qRFff_Texn833svz7pWEUA

@@ -2,9 +2,9 @@
 
 ## Kullanılacak Teknolojiler
 
-NodeJS
-ExpressJS - (Jwt,Joi,Multer,NodeMailer,Rate Limiting)
-MongoDB
+NodeJS  
+ExpressJS - (Jwt,Joi,Multer,NodeMailer,Rate Limiting)  
+MongoDB  
 Mongoose
 
 ## Teknik Proje İçeriği
@@ -21,3 +21,7 @@ Mongoose
 ## Mongodb local kurulumu için:
 
 - https://www.youtube.com/watch?v=OS6vzXDRqnE&ab_channel=KadimTeknoloji
+
+## Spesific CORS configuration
+
+- https://stackoverflow.com/questions/43150051/how-to-enable-cors-nodejs-with-express

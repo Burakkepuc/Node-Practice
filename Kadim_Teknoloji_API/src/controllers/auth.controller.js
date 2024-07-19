@@ -56,8 +56,12 @@ const register = async (req, res) => {
       throw new APIError("Register is not done !", 400)
     })
 
+}
 
+const me = async (req, res) => {
+  console.log("Me fonksiyonun içerisi");
+  return new Response(req.user).success(res)
 
 }
 
-module.exports = { login, register }
+module.exports = { login, register, me }
