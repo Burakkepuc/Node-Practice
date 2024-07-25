@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const APIError = require("../utils/errors");
+const User = require("../models/user.model");
 require("dotenv").config();
 
 const createToken = async (user, res) => {
@@ -43,7 +44,35 @@ const verifyToken = async (req, res, next) => {
   })
 }
 
+const createTempToken = async (userId, email) => {
+  const payload = {
+    sub: userId,
+    email
+  }
+
+  const token = await jwt.sign(payload, process.env.JWT_TEMP_KEY, { algorithm: "HS512", expiresIn: "7d" })
+
+  return token;
+}
+
+const decodedTempToken = async (tempToken) => {
+  const token = tempToken.split(" ")[0]
+  let userCheck;
+
+  await jwt.verify(token, process.env.JWT_TEMP_KEY, async (err, decoded) => {
+    if (err) throw new APIError("Invalid Temp Token ", 401)
+    userCheck = await User.findById(decoded.sub).select("_id name lastname email")
+
+    if (!userCheck) throw new APIError("Invalid User", 401)
+
+  })
+  return userCheck
+
+}
+
 module.exports = {
   createToken,
-  verifyToken
+  verifyToken,
+  createTempToken,
+  decodedTempToken
 }

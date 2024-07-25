@@ -17,9 +17,36 @@ POST http://localhost:5000/api/login
 Content-Type: application/json
 
 {
-  "email": "burak@test.com",
+  "email": "burakkepuc.1996@gmail.com",
   "password":"test123"
 }
+
+### Forget Password user
+POST http://localhost:5000/api/forget-password
+Content-Type: application/json
+
+{
+  "email": "burakkepuc.1996@gmail.com"
+}
+
+### Reset Code Check
+POST http://localhost:5000/api/reset-code-check
+Content-Type: application/json
+
+{
+  "email": "burakkepuc.1996@gmail.com",
+  "code":"828436"
+}
+
+### Reset Password
+POST http://localhost:5000/api/reset-password
+Content-Type: application/json
+
+{
+  "password": "test123",
+  "tempToken":"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Njk2ZWQ1YTc2OTU1MWIwMDQ2ZDU5MGUiLCJpYXQiOjE3MjE2MTE0NjYsImV4cCI6MTcyMjIxNjI2Nn0.6TSqFoJ1XpN_QAxj4LJx9Em6YgNgJB_E7qMs-lb4SfxiHc-2KtFUkfnELTUnAp6Q_9LSpgsGYMvzuGlWEtHafQ"
+}
+
 
 ### Access Protected Resource
 GET http://localhost:5000/api/me
