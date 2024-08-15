@@ -1,11 +1,14 @@
 const mongoose = require("mongoose")
 
 const auditLogsSchema = mongoose.Schema({
-  email: { type: String, required: true },
+  email: {
+    type: String
+
+  },
   level: String,
   location: String,
   proc_type: String,
-  log: String,
+  log: mongoose.SchemaTypes.Mixed,
 }, {
   timestamps:
     { createdAt: "created_at", updatedAt: "updated_at" }

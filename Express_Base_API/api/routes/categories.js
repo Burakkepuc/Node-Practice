@@ -1,8 +1,10 @@
 var express = require('express');
 const Category = require('../models/Categories');
 const Response = require('../lib/Response');
+const AuditLogs = require('../lib/AuditLogs');
 const CustomError = require('../lib/Error')
 const Enum = require('../config/Enum')
+const logger = require('../lib/logger/loggerClass')
 
 
 var router = express.Router();
@@ -23,7 +25,7 @@ router.post('/add', async (req, res) => {
   let body = req.body;
 
   try {
-    if (!body.name) throw new CustomError(Enum.HTTP_CODES.BAD_REQUEST, "Validation Error!", " name fields must be filled")
+    if (!body.name) throw new CustomError(Enum.HTTP_CODES.BAD_REQUEST, "Validation Error!", "name fields must be filled")
 
     let category = new Category({
       name: body.name,
@@ -32,9 +34,12 @@ router.post('/add', async (req, res) => {
     })
 
     await category.save()
+    AuditLogs.info(req.user?.email, "Categories", "Add", category)
+    logger.info(req.user?.email, "Categories", "Add", category)
 
     res.json(Response.successResponse({ success: true }, 201))
   } catch (error) {
+    logger.error(req.user?.email, "Categories", "Add", error)
     let errorResponse = Response.errorResponse(error)
     res.status(errorResponse.code).json(errorResponse)
 
@@ -58,6 +63,7 @@ router.put('/update', async (req, res) => {
     }
 
     await Category.updateOne({ _id: body._id }, updates)
+    AuditLogs.info(req.user?.email, "Categories", "Update", { _id: body._id, ...updates })
 
 
     res.json(Response.successResponse({ success: true }))
@@ -77,6 +83,8 @@ router.delete('/delete', async (req, res) => {
     if (!category._id) throw new CustomError(Enum.HTTP_CODES.BAD_REQUEST, "Validation Error!", "_id fields  must be filled")
 
     await Category.deleteOne({ _id: body._id })
+    AuditLogs.info(req.user?.email, "Categories", "Delete", { _id: body._id })
+
 
 
     res.json(Response.successResponse({ success: true }))

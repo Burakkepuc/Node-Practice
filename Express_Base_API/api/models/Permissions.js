@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const permissionsSchema = mongoose.Schema({
   role_id: { type: mongoose.SchemaTypes.ObjectId, required: true },
-  created_by: { type: mongoose.SchemaTypes.ObjectId, required: true },
+  created_by: { type: mongoose.SchemaTypes.ObjectId },
   permission: String,
 }, {
   timestamps:
