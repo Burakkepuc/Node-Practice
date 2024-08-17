@@ -16,7 +16,6 @@ class LoggerClass {
 
   info(email, location, proc_type, log) {
     let logs = this.#createLogObject(email, location, proc_type, log)
-    console.log('Log: ', log);
     logger.info(logs)
   }
 

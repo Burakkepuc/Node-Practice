@@ -4,7 +4,7 @@ const AuditLogs = require('../models/AuditLogs')
 const moment = require('moment')
 var router = express.Router();
 
-router.post("/", async (req, res, next) => {
+router.post("/", async (req, res) => {
   try {
 
     let body = req.body;
@@ -12,11 +12,11 @@ router.post("/", async (req, res, next) => {
     let skip = body.limit;
     let limit = body.skip;
 
-    if (typeof body.skip !== "numeric") {
+    if (typeof body.skip !== "number") {
       skip = 0
     }
 
-    if (typeof body.limit !== "numeric" || body.limit > 500) {
+    if (typeof body.limit !== "number" || body.limit > 500) {
       limit = 500
     }
 

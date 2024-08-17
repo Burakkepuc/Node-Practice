@@ -1,4 +1,5 @@
 var express = require('express');
+var jwt = require('jwt-simple');
 var router = express.Router();
 var Users = require('../models/Users')
 var Roles = require('../models/Roles')
@@ -8,6 +9,7 @@ const Enum = require('../config/Enum');
 const bcrypt = require('bcrypt');
 const is = require('is_js');
 const CustomError = require('../lib/Error');
+const config = require('../config');
 
 
 router.get('/', async (req, res) => {
@@ -83,11 +85,8 @@ router.post('/update', async (req, res) => {
 
     if (Array.isArray(body.roles) && body.roles.length > 0) {
       let userRoles = await UserRoles.find({ user_id: body._id })
-      console.log("🚀 ~ router.post ~ userRoles:", userRoles)
       let removedRoles = userRoles.filter(x => !body.roles.includes(x.role_id))
-      console.log("🚀 ~ router.post ~ removedRoles:", removedRoles)
       let newRoles = body.roles.filter(x => !userRoles.map(r => r.role_id).includes(x))
-      console.log("🚀 ~ router.post ~ newRoles:", newRoles)
 
       if (removedRoles.length > 0) {
         await UserRoles.deleteMany({ _id: { $in: removedRoles.map(x => x._id) } })
@@ -178,6 +177,37 @@ router.post('/register', async (req, res) => {
 
     res.status(Enum.HTTP_CODES.CREATED).json(Response.successResponse({ success: true }, Enum.HTTP_CODES.CREATED))
 
+  } catch (error) {
+    let errorResponse = Response.errorResponse(error)
+    res.status(errorResponse.code).json(errorResponse)
+  }
+})
+
+router.post('/auth', async (req, res) => {
+  try {
+    let { email, password } = req.body;
+    Users.validateFieldsBeforeAuth(email, password)
+
+    let user = await Users.findOne({ email });
+    if (!user)
+      throw new CustomError(Enum.HTTP_CODES.UNAUTHORIZED, "Validation Error", "Email or password wrong")
+
+    if (!user.validPassword(password))
+      throw new CustomError(Enum.HTTP_CODES.UNAUTHORIZED, "Validation Error", "Email or password wrong")
+
+    let payload = {
+      id: user._id,
+      exp: parseInt(Date.now() / 1000) * config.JWT.EXPIRE_TIME
+    }
+
+    let token = jwt.encode(payload, config.JWT.SECRET)
+
+    let userData = {
+      _id: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name
+    }
+    res.json(Response.successResponse({ token, user: userData }))
   } catch (error) {
     let errorResponse = Response.errorResponse(error)
     res.status(errorResponse.code).json(errorResponse)

@@ -21,7 +21,7 @@ class Database {
       this.mongoConnection = db;
       console.log('DB Connected.');
     } catch (error) {
-      console.error(err)
+      console.error(error)
       process.exit(1)
     }
 
